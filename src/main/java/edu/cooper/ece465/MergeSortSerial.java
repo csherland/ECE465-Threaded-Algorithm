@@ -9,18 +9,17 @@ import java.lang.*;
 public class MergeSortSerial {
 
     public static void main(String[] args) {
-        long startTime = System.nanoTime();
 
         List <Integer> myIntegers = new ArrayList<Integer>();
-        String fromFile;
-        int toAdd;
-        BufferedReader br = null;
 
-        // read unsorted integer list file
+        // Read input
+        BufferedReader br = null;
         try {
+            String fromFile;
             br = new BufferedReader(new FileReader("test.txt"));
-            while ( !(fromFile = br.readline()).equals(null)) {
-                toAdd = Integer.parseInt(fromFile);
+            
+            while ((fromFile = br.readLine()) != null) {
+                int toAdd = Integer.parseInt(fromFile);
                 myIntegers.add(toAdd);
             }
 
@@ -28,35 +27,31 @@ public class MergeSortSerial {
             System.out.println("File not found.");
         }
 
-        // sort list
+        // Sort the list
         MergeSort m = new MergeSort();
-        int[] myIntArray = myIntegers.toArray(new int[myIntegers.size()]);
-        m.sort(myIntArray);
+        Integer[] myIntArray = myIntegers.toArray(new Integer[myIntegers.size()]);
 
-        // write sorted list file
-        try {
-            File file = new File("out.txt");
-            FileOutputStream fos = new FileOutputStream(file);
-
-            if (!file.exists()) {
-                file.createNewFile();
-            }
-
-            ByteBuffer byteBuffer = ByteBuffer.allocate(myIntArray.length * 4);
-            IntBuffer intBuffer = byteBuffer.asIntBuffer();
-            intBuffer.put(myIntegers);
-
-            byte[] array = byteBuffer.array();
-
-            fos.write(array);
-
-            fos.flush();
-            fos.close();
-        } catch (IOException e) {
-            System.out.println("Error");
+        int[] myInts = new int[myIntArray.length];
+        for (int i = 0; i < myIntArray.length; ++i) {
+            myInts[i] = myIntArray[i].intValue();
         }
+        m.sort(myInts);
 
-        long endTime = System.nanoTime();
-        long duration = endTime - startTime;
+        // Write the output
+        BufferedWriter outputWriter = null; 
+        try {
+            outputWriter = new BufferedWriter(new FileWriter("out.txt"));
+            for (int i = 0; i < myInts.length; i++) {
+                outputWriter.write(Integer.toString(myInts[i]));
+                outputWriter.newLine();
+            }
+            
+            outputWriter.flush();  
+            outputWriter.close();
+        
+        } catch (IOException e) {
+            System.out.println("Error writing file");
+        }
+        
     }
 }
