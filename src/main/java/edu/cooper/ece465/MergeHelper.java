@@ -1,6 +1,6 @@
 package edu.cooper.ece465;
 
-public class CubbyHole {
+public class MergeHelper {
     private int contents;
     private boolean available = false;
 
@@ -9,12 +9,12 @@ public class CubbyHole {
 
     public synchronized void registerProducer() {
         producers++;
-    } 
+    }
 
     public synchronized void deregisterProducer() {
         producers--;
         notifyAll();
-    } 
+    }
 
     public synchronized boolean getDone() {
         return done;
@@ -26,7 +26,7 @@ public class CubbyHole {
                 done = true;
                 break;
             }
-            
+
             try {
                 wait();
             } catch (InterruptedException e) { }
@@ -35,7 +35,7 @@ public class CubbyHole {
         notifyAll();
         return contents;
     }
- 
+
     public synchronized void put(int value) {
         while (available == true) {
             try {

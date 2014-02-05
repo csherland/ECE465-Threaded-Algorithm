@@ -1,14 +1,14 @@
 package edu.cooper.ece465;
 
-public class CubbyProducer extends Thread {
-    private CubbyHole cubbyhole;
+public class MergeProducer extends Thread {
+    private MergeHole cubbyhole;
     private int number;
- 
-    public CubbyProducer(CubbyHole c, int number) {
+
+    public MergeProducer(MergeHole c, int number) {
         cubbyhole = c;
         this.number = number;
     }
- 
+
     public void run() {
         cubbyhole.registerProducer();
         for (int i = 0; i < ProducerConsumerTest.PROD_SIZE; i++) {
