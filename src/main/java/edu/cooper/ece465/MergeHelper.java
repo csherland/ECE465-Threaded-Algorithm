@@ -1,7 +1,7 @@
 package edu.cooper.ece465;
 
 public class MergeHelper {
-    private int contents;
+    private int[] contents;
     private boolean available = false;
 
     private int producers = 0;
@@ -20,7 +20,7 @@ public class MergeHelper {
         return done;
     }
 
-    public synchronized int get() {
+    public synchronized int[] get() {
         while (available == false) {
             if (producers == 0) {
                 done = true;
@@ -36,7 +36,7 @@ public class MergeHelper {
         return contents;
     }
 
-    public synchronized void put(int value) {
+    public synchronized void put(int[] value) {
         while (available == true) {
             try {
                 wait();
@@ -47,4 +47,5 @@ public class MergeHelper {
         available = true;
         notifyAll();
     }
+
 }

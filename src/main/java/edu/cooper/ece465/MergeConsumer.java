@@ -1,26 +1,27 @@
 package edu.cooper.ece465;
 
 public class MergeConsumer extends Thread {
-    private MergeHelper cubbyhole;
+    private MergeHelper helper;
+    private MergeSort m;
     private int number;
 
     public MergeConsumer(MergeHelper c, int number) {
-        cubbyhole = c;
+        helper = c;
         this.number = number;
+        m = new MergeSort();
     }
 
     public void run() {
-        int value = 0;
+        int[] value;
 
         while (true) {
-            value = cubbyhole.get();
+            value = helper.get();
 
-            if (cubbyhole.getDone()) {
+            if (helper.getDone()) {
                 return;
             }
-
-            System.out.println("Consumer #" + this.number
-                               + " got: " + value);
+        
+            m.sort(value);
         }
     }
 }

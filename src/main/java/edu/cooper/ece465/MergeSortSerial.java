@@ -2,8 +2,6 @@ package edu.cooper.ece465;
 
 import java.util.*;
 import java.io.*;
-import java.nio.*;
-import java.net.*;
 import java.lang.*;
 
 public class MergeSortSerial {
