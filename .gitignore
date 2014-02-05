@@ -14,4 +14,4 @@
 .settings/
 target/
 logs/
-
+*.txt
