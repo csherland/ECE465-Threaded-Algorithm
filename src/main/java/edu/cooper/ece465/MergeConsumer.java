@@ -1,10 +1,10 @@
 package edu.cooper.ece465;
 
 public class MergeConsumer extends Thread {
-    private MergeHole cubbyhole;
+    private MergeHelper cubbyhole;
     private int number;
 
-    public MergeConsumer(MergeHole c, int number) {
+    public MergeConsumer(MergeHelper c, int number) {
         cubbyhole = c;
         this.number = number;
     }
