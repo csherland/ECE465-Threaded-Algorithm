@@ -39,13 +39,6 @@ public class MergeSortSerial {
             System.out.println("Error: input file not found");
         }
 
-    
-        // Need to convert to an int array
-        //int[] sortArray = new int[inputArray.length];
-        //for (int i = 0; i < inputArray.length; ++i) {
-        //    sortArray[i] = inputArray[i].intValue();
-        //}
-    
         // Sort the input
         Integer[] inputArray = input.toArray(new Integer[input.size()]);
         MergeSort m = new MergeSort();
