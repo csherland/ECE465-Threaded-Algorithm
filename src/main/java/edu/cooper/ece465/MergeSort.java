@@ -19,13 +19,12 @@ package edu.cooper.ece465;
 
 public class MergeSort {
     private int[] numbers;
-    private int[] helper;
-    
+    private int[] helper;  
     private int number;
     
     public void sort(int[] values) {
         this.numbers = values;
-        this.helper = new int[number];
+        this.helper = new int[values.length];
         mergesort(0, values.length - 1);
     }
     
@@ -34,7 +33,7 @@ public class MergeSort {
         if (low < high) {
             // Get the index of the element which is in the middle
             int middle = low + (high - low) / 2;
-            
+ 
             // Sort both halves of the array and merge them 
             mergesort(low, middle);
             mergesort(middle + 1, high);
@@ -42,33 +41,31 @@ public class MergeSort {
         }
     }
     
-    private void merge(int low, int middle, int high) {
-    
+    private void merge(int low, int middle, int high) { 
         // Copy both parts into the helper array
         for (int i = low; i <= high; i++) {
             helper[i] = numbers[i];
         }
-        
+ 
         int i = low;
         int j = middle + 1;
         int k = low;
-        
+
         // Copy the smallest values from either the left or the right side back
         // to the original array
-        while (i <= middle && j <= high) {
-          
+        while (i <= middle && j <= high) { 
             if (helper[i] <= helper[j]) {
                 numbers[k] = helper[i++];
             } else {
                 numbers[k] = helper[j++];
             }
-          
-          k++;
+ 
+            k++;
         }
+ 
         // Copy the rest of the left side of the array into the target array
         while (i <= middle) {
             numbers[k++] = helper[i++];
-        }
-    
+        } 
     }
 }
