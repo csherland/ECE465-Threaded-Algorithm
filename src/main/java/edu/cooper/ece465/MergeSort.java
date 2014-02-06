@@ -1,7 +1,5 @@
 /*
- *
- * Modified MergeSort implementation from
- * http://www.vogella.com/tutorials/JavaAlgorithmsMergesort/article.html
+ * Original Source: http://www.vogella.com/tutorials/JavaAlgorithmsMergesort/article.html
  * 
  * Contributors:    Christian Sherland
  *                  Ethan Lusterman
@@ -11,20 +9,19 @@
  * Date:    2/6/14
  *
  * MergeSort.java
- *      
+ *      Modified MergeSort implementation from the source listed above.
  *
  */
 
 package edu.cooper.ece465;
 
 public class MergeSort {
-    private int[] numbers;
-    private int[] helper;  
-    private int number;
+    private Integer[] numbers;
+    private Integer[] helper;  
     
-    public void sort(int[] values) {
+    public void sort(Integer[] values) {
         this.numbers = values;
-        this.helper = new int[values.length];
+        this.helper = new Integer[values.length];
         mergesort(0, values.length - 1);
     }
     

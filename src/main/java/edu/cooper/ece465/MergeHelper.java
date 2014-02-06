@@ -1,7 +1,21 @@
+/*
+ * Authors: Christian Sherland
+ *          Ethan Lusterman
+ *          Michael Scibor
+ *          Elli Rappaport
+ *
+ * Date:    2/6/14
+ *
+ * MergeHelper.java
+ *      Facilitates communication between the MergeSort producers
+ *      and consumers.
+ *
+ *
+ */
 package edu.cooper.ece465;
 
 public class MergeHelper {
-    private int[] contents;
+    private Integer[] contents;
     private boolean available = false;
 
     private int producers = 0;
@@ -20,7 +34,7 @@ public class MergeHelper {
         return done;
     }
 
-    public synchronized int[] get() {
+    public synchronized Integer[] get() {
         while (available == false) {
             if (producers == 0) {
                 done = true;
@@ -36,7 +50,7 @@ public class MergeHelper {
         return contents;
     }
 
-    public synchronized void put(int[] value) {
+    public synchronized void put(Integer[] value) {
         while (available == true) {
             try {
                 wait();

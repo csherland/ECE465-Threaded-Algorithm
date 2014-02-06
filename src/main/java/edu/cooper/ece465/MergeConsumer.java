@@ -1,3 +1,17 @@
+/*
+ * Authors: Christian Sherland
+ *          Ethan Lusterman
+ *          Michael Scibor
+ *          Elli Rappaport
+ *
+ * Date:    2/6/14
+ *
+ * MergeConsumer.java
+ *      Accepts data produced by MergeProducers and
+ *      applies merge sort
+ *
+ */
+
 package edu.cooper.ece465;
 
 public class MergeConsumer extends Thread {
@@ -12,7 +26,7 @@ public class MergeConsumer extends Thread {
     }
 
     public void run() {
-        int[] value;
+        Integer[] value;
 
         while (true) {
             value = helper.get();

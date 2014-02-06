@@ -1,3 +1,16 @@
+/*
+ * Authors: Christian Sherland
+ *          Ethan Lusterman
+ *          Michael Scibor
+ *          Elli Rappaport
+ *
+ * Date:    2/6/14
+ *
+ * MergeProducer.java
+ *      Responsible for producing data to be sorted by consumers
+ *
+ */
+
 package edu.cooper.ece465;
 
 import java.lang.Math;
@@ -16,22 +29,24 @@ public class MergeProducer extends Thread {
     public void run() {
         helper.registerProducer();
         
-        List<Integer> myIntegers = new ArrayList<Integer>();
         
         // Read input
-        BufferedReader br = null;
         try {
-            String fromFile;
-            int numDivisions = 0;
-            br = new BufferedReader(new FileReader("test.txt"));
 
             // Determine how many times to split the list
+            int numDivisions = 0;
+            
             while (Math.pow(2,numDivisions) < ((MergeSortThreaded.CORES)-1)) {
                 if (Math.pow(2,numDivisions) != MergeSortThreaded.CORES-1) {
                     numDivisions++;
                 }
             } 
 
+            // Read in the data
+            String fromFile;
+            List<Integer> myIntegers = new ArrayList<Integer>();
+            BufferedReader br = new BufferedReader(new FileReader("test.txt"));
+            
             while ((fromFile = br.readLine()) != null) { 
                 int toAdd = Integer.parseInt(fromFile);
                 myIntegers.add(toAdd); 
@@ -40,19 +55,10 @@ public class MergeProducer extends Thread {
             int sizeOfSplit = myIntegers.size()/numDivisions;
 
             // TODO: Make sure last elements of array are included
-            List<Integer[]> splitArray = new ArrayList<Integer[]>();
             for (int i = 0; i < myIntegers.size(); i += sizeOfSplit) {
-                splitArray.add(myIntegers.subList(i, i+sizeOfSplit).toArray(new Integer[sizeOfSplit])); 
+                helper.put(myIntegers.subList(i, i+sizeOfSplit).toArray(new Integer[sizeOfSplit])); 
             }
 
-            for (Integer[] subArray:splitArray) {
-                int[] myInts = new int[subArray.length];
-                for (int i = 0; i < subArray.length; ++i) {
-                    myInts[i] = subArray[i].intValue();
-                }
-                
-                helper.put(myInts);
-            }
         } catch (IOException e) {
                 System.out.println("File not found.");
         }
