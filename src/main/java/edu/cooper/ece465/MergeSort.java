@@ -55,9 +55,7 @@ public class MergeSort {
                 numbers[k] = helper[i++];
             } else {
                 numbers[k] = helper[j++];
-            }
- 
-            k++;
+            } 
         }
  
         // Copy the rest of the left side of the array into the target array
@@ -68,6 +66,17 @@ public class MergeSort {
 
     public Integer[] mergeLists(Integer[] list1, Integer[] list2) {
         Integer[] mergedList = new Integer[list1.length + list2.length];
+
+        int i = 0, j = 0, k = 0;
+        while ((i <= list1.length) && (j <= list2.length)) {
+                
+            if (list1[i] <= list2[j]) {
+                mergedList[k++] = list1[i++];
+            } else {
+                mergedList[k++] = list2[j++];
+            }
+
+        }
 
         return mergedList;
     }

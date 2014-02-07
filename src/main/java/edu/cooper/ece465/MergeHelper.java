@@ -83,8 +83,15 @@ public class MergeHelper {
                 wait();
             } catch (InterruptedException e) { }
         }
-        
-        availableUnsorted = false;
+       
+        ArrayList<Integer[]> value = (ArrayList<Integer[]>)toMerge.subList(0,1);
+        toMerge.remove(0);
+        toMerge.remove(0);
+
+        if (toMerge.size() < 2) {
+            availableUnsorted = false;
+        }
+
         notifyAll();
         return toMerge;
     }
@@ -97,15 +104,13 @@ public class MergeHelper {
             notifyAll();
             return;
         }
+       
+        toMerge.add(value);
         
-        while (availableUnsorted == true) {
-            try {
-                wait();
-            } catch (InterruptedException e) { }
-
+        if (toMerge.size() >= 2) {
+            availableUnsorted = true;
         }
-        
-        availableUnsorted = true;
+
         notifyAll();
     }
     
