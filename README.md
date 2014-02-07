@@ -1,4 +1,4 @@
-threadedJavaJourney
+ECE465-Threaded-Algorithm
 ===================
 
-Take a trip on the wonderful world of threading in Java
+Implementation of a multi-threaded merge sort for ECE465-Cloud-Computing
