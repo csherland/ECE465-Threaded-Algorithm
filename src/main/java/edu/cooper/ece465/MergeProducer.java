@@ -35,12 +35,6 @@ public class MergeProducer extends Thread {
 
             // Determine how many times to split the list
             int numDivisions = 0;
-            
-            while (Math.pow(2,numDivisions) < ((MergeSortThreaded.CORES)-1)) {
-                if (Math.pow(2,numDivisions) != MergeSortThreaded.CORES-1) {
-                    numDivisions++;
-                }
-            } 
 
             // Read in the data
             String fromFile;

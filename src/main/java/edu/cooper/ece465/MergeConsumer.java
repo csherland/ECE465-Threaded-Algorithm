@@ -31,11 +31,21 @@ public class MergeConsumer extends Thread {
         while (true) {
             value = helper.get();
 
-            if (helper.getDone()) {
-                return;
+            if (helper.getDoneSorting()) {
+                break;
             }
         
             m.sort(value);
+        }
+        
+        while (true) {
+            value = helper.get();
+
+            if (helper.getDoneMerging()) {
+                break;
+            }
+        
+            //merge(value);
         }
     }
 }
