@@ -23,7 +23,7 @@ public class MergeHelper {
      * various phases of the algorithm
      */
     private Integer[] toSort;
-    private List<Integer[]> toMerge;
+    private ArrayList<Integer[]> toMerge;
     private Integer[] sorted;
     private int expectedSize;
 
@@ -34,13 +34,10 @@ public class MergeHelper {
     private boolean availableUnsorted = false;
     private boolean availableUnmerged = false;
     private boolean doneMerging = false;
+    private boolean doneSorting = false;
 
-    public synchronized boolean getAvailableUnsorted() {
-        return availableUnsorted;
-    }
-
-    public synchronized boolean getAvailableUnmerged() {
-        return availableUnmerged;
+    public synchronized boolean getDoneSorting() {
+        return doneSorting;
     }
 
     public synchronized boolean getDoneMerging() {
@@ -80,7 +77,7 @@ public class MergeHelper {
      * Deals with the merging phase of the algorithm
      * Sorted lists are merged together and returned to the producer to be written
      */
-    public synchronized List<Integer[]> getUnmerged() {
+    public synchronized ArrayList<Integer[]> getUnmerged() {
         while (availableUnmerged == false) {
             try {
                 wait();
@@ -92,10 +89,11 @@ public class MergeHelper {
         return toMerge;
     }
 
-    public synchronized void putMerged(Integer[] value) {
+    public synchronized void putUnmerged(Integer[] value) {
         
         if (value.length == expectedSize) {
             doneMerging = true;
+            sorted = value;
             notifyAll();
             return;
         }

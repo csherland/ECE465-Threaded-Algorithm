@@ -66,4 +66,9 @@ public class MergeSort {
         } 
     }
 
+    public Integer[] mergeLists(Integer[] list1, Integer[] list2) {
+        Integer[] mergedList = new Integer[list1.length + list2.length];
+
+        return mergedList;
+    }
 }

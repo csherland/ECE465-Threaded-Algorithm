@@ -12,7 +12,6 @@
  */
 
 package edu.cooper.ece465;
-
 import java.lang.Math;
 import java.util.*;
 import java.io.*;
@@ -27,36 +26,51 @@ public class MergeProducer extends Thread {
     }
 
     public void run() {
-        helper.registerProducer();
         
         
         // Read input
         try {
 
-            // Determine how many times to split the list
-            int numDivisions = 0;
-
-            // Read in the data
-            String fromFile;
-            List<Integer> myIntegers = new ArrayList<Integer>();
+            String currentInput;
+            List<Integer> input = new ArrayList<Integer>();
             BufferedReader br = new BufferedReader(new FileReader("test.txt"));
             
-            while ((fromFile = br.readLine()) != null) { 
-                int toAdd = Integer.parseInt(fromFile);
-                myIntegers.add(toAdd); 
+            while ((currentInput = br.readLine()) != null) { 
+                input.add(Integer.parseInt(currentInput)); 
             }
 
-            int sizeOfSplit = myIntegers.size()/numDivisions;
+            int sizeOfSplit = input.size()/MergeSortThreaded.CORES;
 
-            // TODO: Make sure last elements of array are included
-            for (int i = 0; i < myIntegers.size(); i += sizeOfSplit) {
-                helper.put(myIntegers.subList(i, i+sizeOfSplit).toArray(new Integer[sizeOfSplit])); 
-            }
+            /*
+             * divide the list up for each consumer
+             */
+            int i;
+            for (i = 0; (i + sizeOfSplit) < input.size(); i += sizeOfSplit) {
+                helper.putUnsorted(input.subList(i, i+sizeOfSplit).toArray(new Integer[sizeOfSplit])); 
+            } 
+            helper.putUnsorted(input.subList(i, input.size()-1).toArray(new Integer[input.size()-1-i])); 
 
         } catch (IOException e) {
                 System.out.println("File not found.");
         }
-        
-        helper.deregisterProducer();
+
+        // Wait for the sorted list
+        Integer[] sorted = helper.getSorted();
+       
+        // Write the output
+        try {
+            BufferedWriter outputWriter = new BufferedWriter(new FileWriter("outThreaded.txt"));
+            
+            for (int i = 0; i < sorted.length; i++) {
+                outputWriter.write(Integer.toString(sorted[i]));
+                outputWriter.newLine();
+            }
+
+            outputWriter.flush(); 
+            outputWriter.close();
+
+        } catch (IOException e) {
+            System.out.println("Error: write error");
+        }
     }
 }

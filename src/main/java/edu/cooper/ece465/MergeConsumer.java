@@ -13,39 +13,42 @@
  */
 
 package edu.cooper.ece465;
+import java.util.*;
 
 public class MergeConsumer extends Thread {
     private MergeHelper helper;
     private MergeSort m;
     private int number;
 
-    public MergeConsumer(MergeHelper c, int number) {
-        helper = c;
+    public MergeConsumer(MergeHelper help, int number) {
+        helper = help;
         this.number = number;
         m = new MergeSort();
     }
 
     public void run() {
-        Integer[] value;
+        Integer[] value = {};
+        ArrayList<Integer[]> toMerge;
 
         while (true) {
-            value = helper.get();
+            value = helper.getUnsorted();
 
             if (helper.getDoneSorting()) {
                 break;
             }
         
             m.sort(value);
+            helper.putUnmerged(value);
         }
         
         while (true) {
-            value = helper.get();
+            toMerge = helper.getUnmerged();
 
             if (helper.getDoneMerging()) {
                 break;
             }
-        
-            //merge(value);
+       
+            helper.putUnmerged(m.mergeLists(toMerge.get(0), toMerge.get(1)));
         }
     }
 }

@@ -17,7 +17,6 @@
  */
 
 package edu.cooper.ece465;
-
 import java.util.*;
 
 public class MergeSortThreaded {
@@ -26,11 +25,13 @@ public class MergeSortThreaded {
 
     public static void main(String[] args) {
         MergeHelper helper = new MergeHelper();
+        
+        // Single producer to read input and write output
         MergeProducer p1 = new MergeProducer(helper, 1);
         p1.start();
 
+        // Consumers based upon number of cores
         List <MergeConsumer> consumers = new ArrayList<MergeConsumer>();
-
         for (int i=1; i < CORES-1; i++) {
             consumers.add(new MergeConsumer(helper, i));
             consumers.get(i-1).start();
