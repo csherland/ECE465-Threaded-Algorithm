@@ -27,11 +27,10 @@ public class MergeProducer extends Thread {
 
     public void run() {
         
-        
         // Read input
+        List<Integer> input = new ArrayList<Integer>();
         try {
             String currentInput;
-            List<Integer> input = new ArrayList<Integer>();
             BufferedReader br = new BufferedReader(new FileReader("test.txt"));
             
             while ((currentInput = br.readLine()) != null) { 
@@ -39,30 +38,36 @@ public class MergeProducer extends Thread {
             }
             helper.setExpectedSize(input.size());
 
-            int sizeOfSplit = input.size()/(MergeSortThreaded.CORES-1);
-
-            /*
-             * divide the list up for each consumer
-             */
-            int i;
-            for (i = 0; (i + sizeOfSplit) < input.size(); i += sizeOfSplit) {
-                helper.putUnsorted(input.subList(i, i+sizeOfSplit).toArray(new Integer[sizeOfSplit])); 
-            } 
-            helper.putUnsorted(input.subList(i, input.size()).toArray(new Integer[input.size()-i])); 
-
         } catch (IOException e) {
                 System.out.println("File not found.");
         }
+
+        // Start timing the search
+        long startTime = System.nanoTime();
+ 
+        //divide the list up for each consumer
+        int sizeOfSplit = input.size()/(MergeSortThreaded.CORES-1);
+        int i;
+        for (i = 0; (i + sizeOfSplit) < input.size(); i += sizeOfSplit) {
+            helper.putUnsorted(input.subList(i, i+sizeOfSplit).toArray(new Integer[sizeOfSplit])); 
+        } 
+        helper.putUnsorted(input.subList(i, input.size()).toArray(new Integer[input.size()-i])); 
         helper.setDoneSorting(true);
 
         // Wait for the sorted list
         Integer[] sorted = helper.getSorted();
-       
+
+        // Determine how long the search took
+        long endTime = System.nanoTime();
+        long duration = endTime - startTime;
+        System.out.println("Threaded search executed in " + duration + " nanoseconds");
+        
+        
         // Write the output
         try {
             BufferedWriter outputWriter = new BufferedWriter(new FileWriter("outThreaded.txt"));
             
-            for (int i = 0; i < sorted.length; i++) {
+            for (i = 0; i < sorted.length; i++) {
                 outputWriter.write(Integer.toString(sorted[i]));
                 outputWriter.newLine();
             }

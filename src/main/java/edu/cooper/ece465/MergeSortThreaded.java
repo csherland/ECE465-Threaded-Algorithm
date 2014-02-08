@@ -18,12 +18,62 @@
 
 package edu.cooper.ece465;
 import java.util.*;
+import java.io.*;
 
 public class MergeSortThreaded {
     public static final int PROD_SIZE = 100;
     public static int CORES = Runtime.getRuntime().availableProcessors(); 
 
     public static void main(String[] args) {
+        
+        /*
+         * SERIAL APPROACH
+         */
+        // Read input
+        List<Integer> inputSerial = new ArrayList<Integer>();
+        try {
+            String currentInput;
+            BufferedReader br = new BufferedReader(new FileReader("test.txt"));
+         
+            while ((currentInput = br.readLine()) != null) {
+                inputSerial.add(Integer.parseInt(currentInput));
+            }
+
+        } catch (IOException e) {
+            System.out.println("Error: input file not found");
+        }
+
+        // Sort the input
+        Integer[] inputSerialArray = inputSerial.toArray(new Integer[inputSerial.size()]);
+        MergeSort m = new MergeSort();
+        long startTime = System.nanoTime();
+        m.sort(inputSerialArray);
+        
+        // Determine how long the search took
+        long endTime = System.nanoTime();
+        long duration = endTime - startTime;
+        System.out.println("Serial search executed in " + duration + " nanoseconds");
+
+        // Write the output to file
+        try {
+            BufferedWriter outputWriter = new BufferedWriter(new FileWriter("outSerial.txt"));
+            
+            for (int i = 0; i < inputSerialArray.length; i++) {
+                outputWriter.write(Integer.toString(inputSerialArray[i]));
+                outputWriter.newLine();
+            }
+
+            outputWriter.flush(); 
+            outputWriter.close();
+
+        } catch (IOException e) {
+            System.out.println("Error: write error");
+        }
+
+
+        /*
+         *  THREADED APPROACH
+         */
         MergeHelper helper = new MergeHelper();
         
         // Single producer to read input and write output
@@ -42,5 +92,6 @@ public class MergeSortThreaded {
             MergeConsumer c = new MergeConsumer(helper, 1);
             c.start();
         }
+        
     }
 }
