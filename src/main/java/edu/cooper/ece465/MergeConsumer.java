@@ -32,7 +32,7 @@ public class MergeConsumer extends Thread {
 
         while (true) {
             value = helper.getUnsorted();   
-            if (helper.getDoneSorting()) {
+            if (helper.getDoneSorting() && value == null) {
                 break;
             }
             

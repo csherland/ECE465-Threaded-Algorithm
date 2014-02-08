@@ -117,7 +117,7 @@ public class MergeHelper {
         System.out.println(value.length);
         System.out.println(toSort.length);
 
-        if (value.length == (expectedSize-2)) {
+        if (value.length == expectedSize) {
             doneMerging = true;
             sorted = value;
             notifyAll();
