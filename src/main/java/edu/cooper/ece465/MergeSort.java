@@ -52,9 +52,9 @@ public class MergeSort {
         // to the original array
         while (i <= middle && j <= high) { 
             if (helper[i] <= helper[j]) {
-                numbers[k] = helper[i++];
+                numbers[k++] = helper[i++];
             } else {
-                numbers[k] = helper[j++];
+                numbers[k++] = helper[j++];
             } 
         }
  
@@ -68,15 +68,21 @@ public class MergeSort {
         Integer[] mergedList = new Integer[list1.length + list2.length];
 
         int i = 0, j = 0, k = 0;
-        while ((i <= list1.length) && (j <= list2.length)) {
+        while ((i < list1.length) && (j < list2.length)) {
                 
             if (list1[i] <= list2[j]) {
                 mergedList[k++] = list1[i++];
             } else {
                 mergedList[k++] = list2[j++];
             }
-
         }
+
+        while (i < list1.length) {
+            mergedList[k++] = list1[i++];
+        }
+        while (j < list2.length) {
+            mergedList[k++] = list2[j++]; 
+        }  
 
         return mergedList;
     }

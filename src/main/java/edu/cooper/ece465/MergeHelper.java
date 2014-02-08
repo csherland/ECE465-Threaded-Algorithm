@@ -23,7 +23,7 @@ public class MergeHelper {
      * various phases of the algorithm
      */
     private Integer[] toSort;
-    private ArrayList<Integer[]> toMerge;
+    private ArrayList<Integer[]> toMerge = new ArrayList<Integer[]>();
     private Integer[] sorted;
     private int expectedSize;
 
@@ -35,6 +35,14 @@ public class MergeHelper {
     private boolean availableUnmerged = false;
     private boolean doneMerging = false;
     private boolean doneSorting = false;
+
+    public void setExpectedSize(int value) {
+        expectedSize = value;
+    }
+
+    public synchronized void setDoneSorting(boolean value) {
+        doneSorting = value;
+    }
 
     public synchronized boolean getDoneSorting() {
         return doneSorting;
@@ -50,9 +58,14 @@ public class MergeHelper {
      */
     public synchronized Integer[] getUnsorted() {
         while (availableUnsorted == false) {
+            if (doneSorting) {
+                return null;
+            }
+            
             try {
                 wait();
             } catch (InterruptedException e) { }
+            
         }
         
         availableUnsorted = false;
@@ -82,36 +95,40 @@ public class MergeHelper {
             try {
                 wait();
             } catch (InterruptedException e) { }
+            
+            if (doneMerging) {
+                return null;
+            }
         }
-       
-        ArrayList<Integer[]> value = (ArrayList<Integer[]>)toMerge.subList(0,1);
+      
+        ArrayList<Integer[]> value = new ArrayList<Integer[]>(toMerge.subList(0,2));
         toMerge.remove(0);
         toMerge.remove(0);
 
         if (toMerge.size() < 2) {
-            availableUnsorted = false;
+            availableUnmerged = false;
         }
 
-        notifyAll();
-        return toMerge;
+        return value;
     }
 
     public synchronized void putUnmerged(Integer[] value) {
-        
-        if (value.length == expectedSize) {
+
+        System.out.println(value.length);
+        System.out.println(toSort.length);
+
+        if (value.length == (expectedSize-2)) {
             doneMerging = true;
             sorted = value;
             notifyAll();
-            return;
-        }
-       
-        toMerge.add(value);
+        } else {
+            toMerge.add(value);
         
-        if (toMerge.size() >= 2) {
-            availableUnsorted = true;
+            if (toMerge.size() >= 2) {
+                availableUnmerged = true;
+                notifyAll();
+            }
         }
-
-        notifyAll();
     }
     
     /*

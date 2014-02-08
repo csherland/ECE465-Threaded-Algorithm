@@ -28,17 +28,16 @@ public class MergeConsumer extends Thread {
 
     public void run() {
         Integer[] value = {};
-        ArrayList<Integer[]> toMerge;
+        ArrayList<Integer[]> toMerge = new ArrayList<Integer[]>();
 
         while (true) {
-            value = helper.getUnsorted();
-
+            value = helper.getUnsorted();   
             if (helper.getDoneSorting()) {
                 break;
             }
-        
+            
             m.sort(value);
-            helper.putUnmerged(value);
+            helper.putUnmerged(value); 
         }
         
         while (true) {
@@ -47,8 +46,10 @@ public class MergeConsumer extends Thread {
             if (helper.getDoneMerging()) {
                 break;
             }
-       
+
             helper.putUnmerged(m.mergeLists(toMerge.get(0), toMerge.get(1)));
         }
+
+        System.out.println("Consumer " + number + ": EXITING");
     }
 }
