@@ -50,6 +50,5 @@ public class MergeConsumer extends Thread {
             helper.putUnmerged(m.mergeLists(toMerge.get(0), toMerge.get(1)));
         }
 
-        System.out.println("Consumer " + number + ": EXITING");
     }
 }

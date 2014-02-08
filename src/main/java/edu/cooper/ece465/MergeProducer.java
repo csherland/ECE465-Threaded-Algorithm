@@ -30,7 +30,6 @@ public class MergeProducer extends Thread {
         
         // Read input
         try {
-
             String currentInput;
             List<Integer> input = new ArrayList<Integer>();
             BufferedReader br = new BufferedReader(new FileReader("test.txt"));

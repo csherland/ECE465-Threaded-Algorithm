@@ -114,9 +114,6 @@ public class MergeHelper {
 
     public synchronized void putUnmerged(Integer[] value) {
 
-        System.out.println(value.length);
-        System.out.println(toSort.length);
-
         if (value.length == expectedSize) {
             doneMerging = true;
             sorted = value;
