@@ -92,13 +92,13 @@ public class MergeHelper {
      */
     public synchronized ArrayList<Integer[]> getUnmerged() {
         while (availableUnmerged == false) {
-            try {
-                wait();
-            } catch (InterruptedException e) { }
-            
             if (doneMerging) {
                 return null;
             }
+
+            try {
+                wait();
+            } catch (InterruptedException e) { }
         }
       
         ArrayList<Integer[]> value = new ArrayList<Integer[]>(toMerge.subList(0,2));

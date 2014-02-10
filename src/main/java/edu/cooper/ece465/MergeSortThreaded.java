@@ -82,9 +82,9 @@ public class MergeSortThreaded {
 
         // Consumers based upon number of cores
         List <MergeConsumer> consumers = new ArrayList<MergeConsumer>();
-        for (int i=1; i < CORES; i++) {
+        for (int i=0; i < CORES-1; i++) {
             consumers.add(new MergeConsumer(helper, i));
-            consumers.get(i-1).start();
+            consumers.get(i).start();
         }
 
         // Not multi core system
