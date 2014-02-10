@@ -68,8 +68,7 @@ public class MergeSort {
         Integer[] mergedList = new Integer[list1.length + list2.length];
 
         int i = 0, j = 0, k = 0;
-        while ((i < list1.length) && (j < list2.length)) {
-                
+        while ((i < list1.length) && (j < list2.length)) {          
             if (list1[i] <= list2[j]) {
                 mergedList[k++] = list1[i++];
             } else {
