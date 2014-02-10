@@ -52,7 +52,7 @@ public class MergeSortThreaded {
         // Determine how long the search took
         long endTime = System.nanoTime();
         long duration = endTime - startTime;
-        System.out.println("Serial search executed in " + duration + " nanoseconds");
+        System.out.println("Serial search executed in " + duration/(1000000000.0) + " seconds");
 
         // Write the output to file
         try {
@@ -81,6 +81,7 @@ public class MergeSortThreaded {
         p1.start();
 
         // Consumers based upon number of cores
+        System.out.println("Running with " + (CORES-1) + " consumers"); 
         List <MergeConsumer> consumers = new ArrayList<MergeConsumer>();
         for (int i=0; i < CORES-1; i++) {
             consumers.add(new MergeConsumer(helper, i));
@@ -92,6 +93,5 @@ public class MergeSortThreaded {
             MergeConsumer c = new MergeConsumer(helper, 1);
             c.start();
         }
-        
     }
 }

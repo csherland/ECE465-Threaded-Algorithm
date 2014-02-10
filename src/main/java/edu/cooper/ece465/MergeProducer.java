@@ -59,7 +59,7 @@ public class MergeProducer extends Thread {
         // Determine how long the search took
         long endTime = System.nanoTime();
         long duration = endTime - startTime;
-        System.out.println("Threaded search executed in " + duration + " nanoseconds");
+        System.out.println("Threaded search executed in " + duration/(1000000000.0) + " seconds");
         
         
         // Write the output
