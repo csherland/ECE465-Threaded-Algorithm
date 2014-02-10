@@ -21,10 +21,7 @@ import java.util.*;
 import java.io.*;
 
 public class MergeSortThreaded {
-    public static final int PROD_SIZE = 100;
-    //public static int CORES = Runtime.getRuntime().availableProcessors(); 
-    public static int CORES = 4; 
-
+    public static int CORES = Runtime.getRuntime().availableProcessors();
     public static void main(String[] args) {
         
         /*
