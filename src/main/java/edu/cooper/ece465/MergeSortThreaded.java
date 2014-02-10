@@ -22,7 +22,8 @@ import java.io.*;
 
 public class MergeSortThreaded {
     public static final int PROD_SIZE = 100;
-    public static int CORES = Runtime.getRuntime().availableProcessors(); 
+    //public static int CORES = Runtime.getRuntime().availableProcessors(); 
+    public static int CORES = 4; 
 
     public static void main(String[] args) {
         
@@ -52,7 +53,7 @@ public class MergeSortThreaded {
         // Determine how long the search took
         long endTime = System.nanoTime();
         long duration = endTime - startTime;
-        System.out.println("Serial search executed in " + duration/(1000000000.0) + " seconds");
+        System.out.println("Serial sort executed in " + duration/(1000000000.0) + " seconds");
 
         // Write the output to file
         try {
