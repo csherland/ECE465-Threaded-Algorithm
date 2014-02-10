@@ -23,7 +23,7 @@ import java.io.*;
 public class MergeSortThreaded {
     public static int CORES = Runtime.getRuntime().availableProcessors();
     public static void main(String[] args) {
-        
+       
         /*
          * SERIAL APPROACH
          */
