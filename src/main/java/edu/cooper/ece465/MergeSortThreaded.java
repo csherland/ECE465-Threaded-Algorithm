@@ -10,9 +10,9 @@
  *      Takes a list of integer inputs from test.txt and applies
  *      the merge sort algorithm to the data using a mutli-threaded
  *      mergesort algorithm
- *  
+ *
  *      The sorted result is written to outThreaded.txt
- *      
+ *
  *
  */
 
@@ -21,9 +21,22 @@ import java.util.*;
 import java.io.*;
 
 public class MergeSortThreaded {
-    public static int CORES = Runtime.getRuntime().availableProcessors();
+    public static int NPROD;
+    public static int NCONS;
+
     public static void main(String[] args) {
-       
+
+        // Load the project properties
+        Properties properties = new Properties();
+        try {
+            properties.load(new FileInputStream("src/main/resources/threadedMerge.properties"));
+        } catch (IOException e) {
+            System.out.println("Error: could not locate properties file");
+        }
+
+        NPROD = Integer.parseInt((String)properties.get("NPROD"));
+        NCONS = Integer.parseInt((String)properties.get("NCONS"));
+
         /*
          * SERIAL APPROACH
          */
@@ -32,7 +45,7 @@ public class MergeSortThreaded {
         try {
             String currentInput;
             BufferedReader br = new BufferedReader(new FileReader("test.txt"));
-         
+
             while ((currentInput = br.readLine()) != null) {
                 inputSerial.add(Integer.parseInt(currentInput));
             }
@@ -46,7 +59,7 @@ public class MergeSortThreaded {
         MergeSort m = new MergeSort();
         long startTime = System.nanoTime();
         m.sort(inputSerialArray);
-        
+
         // Determine how long the search took
         long endTime = System.nanoTime();
         long duration = endTime - startTime;
@@ -55,13 +68,13 @@ public class MergeSortThreaded {
         // Write the output to file
         try {
             BufferedWriter outputWriter = new BufferedWriter(new FileWriter("outSerial.txt"));
-            
+
             for (int i = 0; i < inputSerialArray.length; i++) {
                 outputWriter.write(Integer.toString(inputSerialArray[i]));
                 outputWriter.newLine();
             }
 
-            outputWriter.flush(); 
+            outputWriter.flush();
             outputWriter.close();
 
         } catch (IOException e) {
@@ -73,23 +86,18 @@ public class MergeSortThreaded {
          *  THREADED APPROACH
          */
         MergeHelper helper = new MergeHelper();
-        
-        // Single producer to read input and write output
-        MergeProducer p1 = new MergeProducer(helper, 1);
-        p1.start();
 
-        // Consumers based upon number of cores
-        System.out.println("Running with " + (CORES-1) + " consumers"); 
-        List <MergeConsumer> consumers = new ArrayList<MergeConsumer>();
-        for (int i=0; i < CORES-1; i++) {
-            consumers.add(new MergeConsumer(helper, i));
-            consumers.get(i).start();
+        // Single producer to read input and write output
+        List <MergeProducer> producers = new ArrayList<MergeProducer>();
+        for (int i=0; i < NPROD; i++) {
+            producers.add(new MergeProducer(helper, i));
+            producers.get(i).start();
         }
 
-        // Not multi core system
-        if (CORES == 1) {
-            MergeConsumer c = new MergeConsumer(helper, 1);
-            c.start();
+        List <MergeConsumer> consumers = new ArrayList<MergeConsumer>();
+        for (int i=0; i < NCONS; i++) {
+            consumers.add(new MergeConsumer(helper, i));
+            consumers.get(i).start();
         }
     }
 }

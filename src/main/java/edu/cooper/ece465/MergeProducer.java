@@ -45,7 +45,7 @@ public class MergeProducer extends Thread {
         long startTime = System.nanoTime();
  
         //divide the list up for each consumer
-        int sizeOfSplit = input.size()/(MergeSortThreaded.CORES-1);
+        int sizeOfSplit = input.size()/(MergeSortThreaded.NCONS);
         int i;
         for (i = 0; (i + sizeOfSplit) < input.size(); i += sizeOfSplit) {
             helper.putUnsorted(input.subList(i, i+sizeOfSplit).toArray(new Integer[sizeOfSplit])); 
